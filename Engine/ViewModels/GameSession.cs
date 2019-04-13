@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Engine.Models;
+using Engine.Factories;
 
 namespace Engine.ViewModels
 {
@@ -11,7 +12,7 @@ namespace Engine.ViewModels
     {
         public Player CurrentPlayer { get; set; }
         public Location CurrentLocation { get; set; } 
-
+        public World CurrentWorld { get; set; }
 
         public GameSession()
         {
@@ -29,6 +30,11 @@ namespace Engine.ViewModels
             CurrentLocation.YCoordinate = 2;
             CurrentLocation.Description = "A filthy hospital room. The other bed is empty.";
             CurrentLocation.ImageName = "/Engine;component/Images/Locations/Hospital.png";
+
+            WorldFactory factory = new WorldFactory();
+            CurrentWorld = factory.CreateWorld();
+
+            CurrentLocation = CurrentWorld.LocationAt(2,1);
         }
     }
 }
