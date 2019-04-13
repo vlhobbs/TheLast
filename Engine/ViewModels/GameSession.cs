@@ -10,6 +10,8 @@ namespace Engine.ViewModels
     public class GameSession
     {
         public Player CurrentPlayer { get; set; }
+        public Location CurrentLocation { get; set; } 
+
 
         public GameSession()
         {
@@ -20,6 +22,13 @@ namespace Engine.ViewModels
             CurrentPlayer.Tokens = 1000000;
             CurrentPlayer.ExperiencePoints = 0;
             CurrentPlayer.Level = 1;
+
+            CurrentLocation = new Location();
+            CurrentLocation.Name = "Hospital Room";
+            CurrentLocation.XCoordinate = 1;
+            CurrentLocation.YCoordinate = 2;
+            CurrentLocation.Description = "A filthy hospital room. The other bed is empty.";
+            CurrentLocation.ImageName = "C:/Users/wallf/source/repos/SOSCSRPG/Engine/Images/Locations/Hospital.png";
         }
     }
 }

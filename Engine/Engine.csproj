@@ -41,10 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\GameSession.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Locations\Food Court.png" />
+    <Resource Include="Images\Locations\Hospital.png" />
+    <Resource Include="Images\Locations\Lobby.png" />
+    <Resource Include="Images\Locations\Mall.png" />
+    <Resource Include="Images\Locations\Park.png" />
+    <Resource Include="Images\Locations\Servers.png" />
+    <Resource Include="Images\Locations\Store.png" />
+    <Resource Include="Images\Locations\Street.png" />
+    <Resource Include="Images\Locations\Zoo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
