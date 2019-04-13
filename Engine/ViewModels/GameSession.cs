@@ -28,7 +28,7 @@ namespace Engine.ViewModels
             CurrentLocation.XCoordinate = 1;
             CurrentLocation.YCoordinate = 2;
             CurrentLocation.Description = "A filthy hospital room. The other bed is empty.";
-            CurrentLocation.ImageName = "C:/Users/wallf/source/repos/SOSCSRPG/Engine/Images/Locations/Hospital.png";
+            CurrentLocation.ImageName = "/Engine;component/Images/Locations/Hospital.png";
         }
     }
 }
