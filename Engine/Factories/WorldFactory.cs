@@ -7,13 +7,13 @@ using Engine.Models;
 
 namespace Engine.Factories
 {
-    internal class WorldFactory
+    internal static class WorldFactory
     {
-        internal World CreateWorld()
+        internal static World CreateWorld()
         {
             World newWorld = new World();
 
-            newWorld.AddLocation(0, 0, "Zoo",
+            newWorld.AddLocation(1, -1, "Zoo",
                 "The cages are empty, the asphalt cracked.\nBut a few robot attendants still wander about.",
                 "/Engine;component/Images/Locations/Zoo.png");
 

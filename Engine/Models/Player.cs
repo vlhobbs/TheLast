@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Engine.Models
 {
-    public class Player :INotifyPropertyChanged
-
+    public class Player : BaseNotificationClass
     {
         private string _name;
         private string _characterClass;
@@ -23,7 +22,7 @@ namespace Engine.Models
             set
             {
                 _name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -33,7 +32,7 @@ namespace Engine.Models
             set
             {
                 _characterClass = value;
-                OnPropertyChanged("CharacterClass");
+                OnPropertyChanged(nameof(CharacterClass));
             }
         }
         public int HitPoints
@@ -42,7 +41,7 @@ namespace Engine.Models
             set
             {
                 _hitPoints = value;
-                OnPropertyChanged("HitPoints");
+                OnPropertyChanged(nameof(HitPoints));
             }
         }
 
@@ -52,7 +51,7 @@ namespace Engine.Models
             set
             {
                 _experiencePoints = value;
-                OnPropertyChanged("ExperiencePoints");
+                OnPropertyChanged(nameof(ExperiencePoints));
             }
         }
 
@@ -62,7 +61,7 @@ namespace Engine.Models
             set
             {
                 _level = value;
-                OnPropertyChanged("Level");
+                OnPropertyChanged(nameof(Level));
             }
         }
 
@@ -72,18 +71,21 @@ namespace Engine.Models
             set
             {
                 _tokens = value;
-                OnPropertyChanged("Tokens");
+                OnPropertyChanged(nameof(Tokens));
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public ObservableCollection<GameItem> Inventory { get; set; }
 
-        protected virtual void OnPropertyChanged(String propertyName)
+        public Player()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Inventory = new ObservableCollection<GameItem>();
         }
-        //later properties: Strength, Dexterity
-        //Strength adds to attack power and is higher on androids
-        //Dexterity adds to defense and is higher on humans
     }
+
+
+    //later properties: Strength, Dexterity
+    //Strength adds to attack power and is higher on androids
+    //Dexterity adds to defense and is higher on humans
 }
+
