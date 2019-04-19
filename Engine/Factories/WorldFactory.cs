@@ -36,6 +36,7 @@ namespace Engine.Factories
             newWorld.AddLocation(2, 1, "Empty Street",
                 "The wind blows trash through the street.\nYou hear the constant howl of feral dogs.",
                 "/Engine;component/Images/Locations/Street.png");
+            newWorld.LocationAt(2, 1).QuestsAvailableHere.Add(QuestFactory.GetQuestByID(1));
 
             newWorld.AddLocation(3, 0, "Food Court",
                 "TVs and radio equipment... what was this place?\nSome sort of communication hub?",
