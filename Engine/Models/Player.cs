@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -76,6 +77,8 @@ namespace Engine.Models
         }
 
         public ObservableCollection<GameItem> Inventory { get; set; }
+        public List<GameItem> Weapons =>
+            Inventory.Where(i => i is Weapon).ToList();
         public ObservableCollection<QuestStatus> Quests { get; set; }
 
         public Player()
@@ -83,9 +86,13 @@ namespace Engine.Models
             Inventory = new ObservableCollection<GameItem>();
             Quests = new ObservableCollection<QuestStatus>();
         }
+
+        public void AddItemToInventory(GameItem item)
+        {
+            Inventory.Add(item);
+            OnPropertyChanged(nameof(Weapons));
+        }
     }
-
-
     //later properties: Strength, Dexterity
     //Strength adds to attack power and is higher on androids
     //Dexterity adds to defense and is higher on humans

@@ -8,6 +8,7 @@
         FontSize="11pt"
         Title="The Last" Height="680" Width="1080"
         >
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
@@ -23,9 +24,11 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
+        
+        <!-- Menu -->
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Menu" Background="AliceBlue"/>
 
+        <!-- Player Stats-->
         <Grid Grid.Row="1" Grid.Column="0" Background="Aquamarine">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -55,7 +58,8 @@
             <Label Grid.Row="5" Grid.Column="0" Content="Level:"/>
             <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
         </Grid>
-
+        
+        <!-- Gameplay -->
         <Grid Grid.Row="1" Grid.Column="1" 
               Background="Beige">
             <Grid.RowDefinitions>
@@ -67,6 +71,26 @@
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
+
+            <!-- Game Messages -->
+            <Border Grid.Row="0" Grid.Column="0"
+                    Grid.RowSpan="2"
+                    BorderBrush="Gainsboro"
+                    BorderThickness="1">
+
+                <RichTextBox x:Name="GameMessages"
+                             Background="Beige"
+                             VerticalScrollBarVisibility="Auto">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0" />
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
+                
+            </Border>
+            
+            <!-- Location Information -->
 
             <Border Grid.Row="0" Grid.Column="1"
                     BorderBrush= "Gainsboro"
@@ -96,8 +120,41 @@
                 </Grid>
 
             </Border>
+            
+            <!-- Monster Information -->
+            <Border Grid.Row="1" Grid.Column="1"
+                    BorderBrush="Gainsboro"
+                    BorderThickness="1">
 
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               HorizontalAlignment="Center"
+                               Height="Auto"
+                               Text="{Binding CurrentMonster.Name}" />
+
+                    <Image Grid.Row="1"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Height="125"
+                           Width="125"
+                           Source="{Binding CurrentMonster.ImageName}" />
+
+                    <StackPanel Grid.Row="2"
+                                Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
+        
+        <!-- Inventory and Quests -->
         <Grid Grid.Row="2" Grid.Column="0"
               Background="BurlyWood">
 
@@ -133,7 +190,10 @@
                 </TabItem>
             </TabControl>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="1" Background="Lavender">
+
+        <!-- Action Controls -->
+        <Grid Grid.Row="2" Grid.Column="1" 
+              Background="Lavender">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -144,6 +204,34 @@
                 <ColumnDefinition Width="255" />
             </Grid.ColumnDefinitions>
 
+            <!-- Combat Controls -->
+            <Grid Grid.Row="0" Grid.Column="0"
+                  Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Row="0" Grid.Column="0"
+                          ItemsSource="{Binding CurrentPlayer.Weapons}"
+                          SelectedItem="{Binding CurrentWeapon}"
+                          DisplayMemberPath="Name"
+                          SelectedValuePath="ID"/>
+
+                <Button Grid.Row="0" Grid.Column="2"
+                        Content="Use"
+                        Click="OnClick_AttackMonster"/>
+            </Grid>
+
+            <!-- Movement Controls -->
             <Grid Grid.Row="0" Grid.Column="1">
 
                 <Grid.RowDefinitions>
@@ -163,27 +251,22 @@
                     Click="OnClick_MoveNorth"
                     Visibility="{Binding HasLocationToNorth, Converter={StaticResource BooleanToVisibility}}"
                     Content= "North" />
-
                 <Button Grid.Row="1" Grid.Column="0" 
                     Height="25" Width="65" Margin="10"
                     Click="OnClick_MoveWest"
                     Visibility="{Binding HasLocationToWest, Converter={StaticResource BooleanToVisibility}}"
                     Content="West"/>
-                
                 <Button Grid.Row="1" Grid.Column="2" 
                     Height="25" Width="65" Margin="10" 
                     Click="OnClick_MoveEast"
                     Visibility="{Binding HasLocationToEast, Converter={StaticResource BooleanToVisibility}}"
                     Content="East"/>
-
                 <Button Grid.Row="2" Grid.Column="1" 
                     Height="25" Width="65" Margin="10"
                     Click="OnClick_MoveSouth"
                     Visibility="{Binding HasLocationToSouth, Converter={StaticResource BooleanToVisibility}}"
                     Content="South"/>
             </Grid>
-
         </Grid>
-
     </Grid>
 </Window>
