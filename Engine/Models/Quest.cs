@@ -15,18 +15,18 @@ namespace Engine.Models
         public List<ItemQuantity> ItemsToComplete { get; set; }
 
         public int RewardExperiencePoints { get; set; }
-        public int RewardGold { get; set; }
+        public int RewardTokens { get; set; }
         public List<ItemQuantity> RewardItems { get; set; }
 
         public Quest(int id, string name, string description, List<ItemQuantity> itemsToComplete,
-                     int rewardExperiencePoints, int rewardGold, List<ItemQuantity> rewardItems)
+                     int rewardExperiencePoints, int rewardTokens, List<ItemQuantity> rewardItems)
         {
             ID = id;
             Name = name;
             Description = description;
             ItemsToComplete = itemsToComplete;
             RewardExperiencePoints = rewardExperiencePoints;
-            RewardGold = rewardGold;
+            RewardTokens = rewardTokens;
             RewardItems = rewardItems;
         }
     }

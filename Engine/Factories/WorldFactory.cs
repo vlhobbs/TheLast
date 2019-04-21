@@ -30,6 +30,8 @@ namespace Engine.Factories
             newWorld.AddLocation(1, 1, "Hospital Lobby",
                 "Torn carpet and broken chairs.\nA vending machine sits in one corner.",
                 "Lobby.png");
+            newWorld.LocationAt(1, 1).TraderHere =
+                TraderFactory.GetTraderByName("Hospital Vending Machine");
 
             newWorld.AddLocation(1, 2, "Hospital Room",
                 "A filthy hospital room. The other bed is empty.\nA few robots wander in and out over time.",
