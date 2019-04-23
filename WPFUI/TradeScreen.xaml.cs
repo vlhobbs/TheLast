@@ -18,31 +18,34 @@ namespace WPFUI
 
         private void OnClick_Sell(object sender, RoutedEventArgs e)
         {
-            GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
+            GroupedInventoryItem groupedInventoryItem = 
+                ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
 
-            if (item != null)
+            if (groupedInventoryItem != null)
             {
-                Session.CurrentPlayer.Tokens += item.Price;
-                Session.CurrentTrader.AddItemToInventory(item);
-                Session.CurrentPlayer.RemoveItemFromInventory(item);
+                Session.CurrentPlayer.Tokens += groupedInventoryItem.Item.Price;
+                Session.CurrentTrader.AddItemToInventory(groupedInventoryItem.Item);
+                Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryItem.Item);
             }
         }
 
         private void OnClick_Buy(object sender, RoutedEventArgs e)
         {
-            GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
+            GroupedInventoryItem groupedInventoryItem =
+                ((FrameworkElement)sender).DataContext as GroupedInventoryItem; 
 
-            if (item != null)
+
+            if (groupedInventoryItem != null)
             {
-                if (Session.CurrentPlayer.Tokens >= item.Price)
+                if (Session.CurrentPlayer.Tokens >= groupedInventoryItem.Item.Price)
                 {
-                    Session.CurrentPlayer.Tokens -= item.Price;
-                    Session.CurrentTrader.RemoveItemFromInventory(item);
-                    Session.CurrentPlayer.AddItemToInventory(item);
+                    Session.CurrentPlayer.Tokens -= groupedInventoryItem.Item.Price;
+                    Session.CurrentTrader.RemoveItemFromInventory(groupedInventoryItem.Item);
+                    Session.CurrentPlayer.AddItemToInventory(groupedInventoryItem.Item);
                 }
                 else
                 {
-                    MessageBox.Show("You do not have enough gold");
+                    MessageBox.Show("You do not have enough tokens.");
                 }
             }
         }
