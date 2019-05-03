@@ -23,7 +23,7 @@ namespace WPFUI
 
             if (groupedInventoryItem != null)
             {
-                Session.CurrentPlayer.Tokens += groupedInventoryItem.Item.Price;
+                Session.CurrentPlayer.ReceiveTokens(groupedInventoryItem.Item.Price);
                 Session.CurrentTrader.AddItemToInventory(groupedInventoryItem.Item);
                 Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryItem.Item);
             }
@@ -39,7 +39,7 @@ namespace WPFUI
             {
                 if (Session.CurrentPlayer.Tokens >= groupedInventoryItem.Item.Price)
                 {
-                    Session.CurrentPlayer.Tokens -= groupedInventoryItem.Item.Price;
+                    Session.CurrentPlayer.SpendTokens(groupedInventoryItem.Item.Price);
                     Session.CurrentTrader.RemoveItemFromInventory(groupedInventoryItem.Item);
                     Session.CurrentPlayer.AddItemToInventory(groupedInventoryItem.Item);
                 }
