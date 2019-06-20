@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Engine.Models;
 
 namespace Engine.Factories
@@ -15,7 +11,10 @@ namespace Engine.Factories
             {
                 case 1:
                     Monster snake =
-                        new Monster("Snake", "Snake.png", 4, 4, 1, 2, 5, 1);
+                        new Monster("Snake", "Snake.png", 4, 4, 5, 1);
+
+                    snake.CurrentWeapon = ItemFactory.CreateGameItem(1501);
+
                     AddLootItem(snake, 9001, 25);
                     AddLootItem(snake, 9002, 75);
 
@@ -23,7 +22,9 @@ namespace Engine.Factories
 
                 case 2:
                     Monster rat =
-                        new Monster("Rat", "Rat.png", 5, 5, 1, 2, 5, 1);
+                        new Monster("Rat", "Rat.png", 5, 5, 5, 1);
+
+                    rat.CurrentWeapon = ItemFactory.CreateGameItem(1502);
 
                     AddLootItem(rat, 9003, 25);
                     AddLootItem(rat, 9004, 75);
@@ -32,7 +33,9 @@ namespace Engine.Factories
 
                 case 3:
                     Monster robot =
-                        new Monster("Robot", "Robot.png", 10, 10, 1, 4, 10, 3);
+                        new Monster("Robot", "Robot.png", 10, 10, 10, 3);
+
+                    robot.CurrentWeapon = ItemFactory.CreateGameItem(1503);
 
                     AddLootItem(robot, 9005, 25);
                     AddLootItem(robot, 9006, 75);

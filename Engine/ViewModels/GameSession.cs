@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Engine.Models;
-using Engine.Factories;
 using Engine.EventArgs;
+using Engine.Factories;
+using Engine.Models;
 
 namespace Engine.ViewModels
 {
@@ -26,7 +26,8 @@ namespace Engine.ViewModels
             {
                 if (_currentPlayer != null)
                 {
-                    CurrentPlayer.OnLeveledUp -= OnCurrentPlayerLeveledUp;
+                    _currentPlayer.OnActionPerformed -= OnCurrentPlayerPerformedAction;
+                    _currentPlayer.OnLeveledUp -= OnCurrentPlayerLeveledUp;
                     _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
                 }
 
@@ -34,6 +35,7 @@ namespace Engine.ViewModels
 
                 if (_currentPlayer != null)
                 {
+                    _currentPlayer.OnActionPerformed += OnCurrentPlayerPerformedAction;
                     _currentPlayer.OnLeveledUp += OnCurrentPlayerLeveledUp;
                     _currentPlayer.OnKilled += OnCurrentPlayerKilled;
                 }
@@ -68,6 +70,7 @@ namespace Engine.ViewModels
             {
                 if(_currentMonster != null)
                 {
+                    _currentMonster.OnActionPerformed -= OnCurrentMonsterPerformedAction;
                     _currentMonster.OnKilled -= OnCurrentMonsterKilled;
                 }
 
@@ -75,6 +78,7 @@ namespace Engine.ViewModels
 
                 if(_currentMonster != null)
                 {
+                    _currentMonster.OnActionPerformed += OnCurrentMonsterPerformedAction;
                     _currentMonster.OnKilled += OnCurrentMonsterKilled;
 
                     RaiseMessage("");
@@ -97,8 +101,6 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasTrader));
             }
         }
-
-        public Weapon CurrentWeapon { get; set; }
 
         public bool HasLocationToNorth =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
@@ -246,45 +248,33 @@ namespace Engine.ViewModels
 
         public void AttackCurrentMonster()
         {
-            if (CurrentWeapon == null)
+            if (CurrentPlayer.CurrentWeapon == null)
             {
                 RaiseMessage("You must select a weapon, to attack.");
                 return;
             }
 
-            // Determine damage to monster
-            int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage);
+            CurrentPlayer.UseCurrentWeaponOn(CurrentMonster);
 
-            if (damageToMonster == 0)
-            {
-                RaiseMessage($"You missed the {CurrentMonster.Name}.");
-            }
-            else
-            {
-                RaiseMessage($"You hit the {CurrentMonster.Name} for {damageToMonster} points.");
-                CurrentMonster.TakeDamage(damageToMonster);
-            }
-            // If monster if killed, collect rewards and loot
-            if (CurrentMonster.IsDead)
+            if(CurrentMonster.IsDead)
             {
                 // Get another monster to fight
                 GetMonsterAtLocation();
             }
             else
             {
-                //Let the monster attack
-                int damageToPlayer = RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
-
-                if (damageToPlayer == 0)
-                {
-                    RaiseMessage($"The {CurrentMonster.Name} attacks, but misses you.");
-                }
-                else
-                {
-                    RaiseMessage($"The {CurrentMonster.Name} hit you for {damageToPlayer} points.");
-                    CurrentPlayer.TakeDamage(damageToPlayer);
-                }
+                CurrentMonster.UseCurrentWeaponOn(CurrentPlayer);
             }
+        }
+
+        private void OnCurrentPlayerPerformedAction(object sender, string result)
+        {
+            RaiseMessage(result);
+        }
+
+        private void OnCurrentMonsterPerformedAction(object sender, string result)
+        {
+            RaiseMessage(result);
         }
 
         private void OnCurrentPlayerKilled(object sender, System.EventArgs eventArgs)
@@ -304,7 +294,7 @@ namespace Engine.ViewModels
             RaiseMessage($"You receive {CurrentMonster.RewardExperiencePoints} experience points.");
             CurrentPlayer.AddExperience(CurrentMonster.RewardExperiencePoints);
 
-            RaiseMessage($"You receive {CurrentMonster.Tokens} gold.");
+            RaiseMessage($"You receive {CurrentMonster.Tokens} tokens.");
             CurrentPlayer.ReceiveTokens(CurrentMonster.Tokens);
 
             foreach (GameItem gameItem in CurrentMonster.Inventory)
@@ -318,6 +308,7 @@ namespace Engine.ViewModels
         {
             RaiseMessage($"You are now level {CurrentPlayer.Level}!");
         }
+
         private void RaiseMessage(string message)
         {
             OnMessageRaised?.Invoke(this, new GameMessageEventArgs(message));
