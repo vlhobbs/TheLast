@@ -15,6 +15,7 @@ namespace Engine.Models
         private int _tokens;
         private int _level;
         private GameItem _currentWeapon;
+        private GameItem _currentConsumable;
 
         public string Name
         {
@@ -87,12 +88,38 @@ namespace Engine.Models
             }
         }
 
+        public GameItem CurrentConsumable
+        {
+            get => _currentConsumable;
+            set
+            {
+                if(_currentConsumable != null)
+                {
+                    _currentConsumable.Action.OnActionPerformed -= RaiseActionPerformedEvent;
+                }
+
+                _currentConsumable = value;
+
+                if(_currentConsumable != null)
+                {
+                    _currentConsumable.Action.OnActionPerformed += RaiseActionPerformedEvent;
+                }
+
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<GameItem> Inventory { get; }
 
         public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; }
 
         public List<GameItem> Weapons =>
             Inventory.Where(i => i.Category == GameItem.ItemCategory.Weapon).ToList();
+
+        public List<GameItem> Consumables =>
+            Inventory.Where(i => i.Category == GameItem.ItemCategory.Consumable).ToList();
+
+        public bool HasConsumable => Consumables.Any();
 
         public bool IsDead => CurrentHitPoints <= 0;
 
@@ -117,6 +144,12 @@ namespace Engine.Models
         public void UseCurrentWeaponOn(LivingEntity target)
         {
             CurrentWeapon.PerformAction(this, target);
+        }
+
+        public void UseCurrentConsumable()
+        {
+            CurrentConsumable.PerformAction(this, this);
+            RemoveItemFromInventory(CurrentConsumable);
         }
 
         public void TakeDamage(int hitPointsOfDamage)
@@ -159,7 +192,15 @@ namespace Engine.Models
 
             Tokens -= amountOfTokens;
         }
+        //how to add multiple items in grouped inventory to a trader? So they can have unlimited potions
 
+        public void AddMultipleItemsToInventory(GameItem item, int quantity)
+        {
+            for (int i = 0; i < quantity; i++)
+            {
+                AddItemToInventory(item);
+            }
+        }
         public void AddItemToInventory(GameItem item)
         {
             Inventory.Add(item);
@@ -179,6 +220,8 @@ namespace Engine.Models
             }
 
             OnPropertyChanged(nameof(Weapons));
+            OnPropertyChanged(nameof(Consumables));
+            OnPropertyChanged(nameof(HasConsumable));
         }
 
         public void RemoveItemFromInventory(GameItem item)
@@ -202,6 +245,8 @@ namespace Engine.Models
             }
 
             OnPropertyChanged(nameof(Weapons));
+            OnPropertyChanged(nameof(Consumables));
+            OnPropertyChanged(nameof(HasConsumable));
         }
 
 

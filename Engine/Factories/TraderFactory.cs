@@ -13,6 +13,7 @@ namespace Engine.Factories
         {
             Trader hospitalVendingMachine = new Trader("Hospital Vending Machine");
             hospitalVendingMachine.AddItemToInventory(ItemFactory.CreateGameItem(1001));
+            hospitalVendingMachine.AddMultipleItemsToInventory(ItemFactory.CreateGameItem(2001), 20);
 
             AddTraderToList(hospitalVendingMachine);
         }
