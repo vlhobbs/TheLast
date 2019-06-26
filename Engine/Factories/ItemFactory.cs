@@ -19,11 +19,15 @@ namespace Engine.Factories
             BuildWeapon(1503, "Robot fists", 0, 0, 4);
 
             BuildHealingItem(2001, "Granola Bar", 5, 2);
+            //will probably change names later
+            BuildMiscellaneousItem(3001, "Oats", 1);
+            BuildMiscellaneousItem(3002, "Honey", 2);
+            BuildMiscellaneousItem(3003, "Raisins", 2);
 
             BuildMiscellaneousItem(9001, "Snake fang", 1);
             BuildMiscellaneousItem(9002, "Snakeskin", 2);
-            BuildMiscellaneousItem(9003, "Rat tail", 1);
-            BuildMiscellaneousItem(9004, "Rat fur", 2);
+            BuildMiscellaneousItem(9003, "Squirrel tail", 1);
+            BuildMiscellaneousItem(9004, "Squirrel fur", 2);
             BuildMiscellaneousItem(9005, "Bot datastore", 1);
             BuildMiscellaneousItem(9006, "Bot circuits", 2);
         }
@@ -53,6 +57,11 @@ namespace Engine.Factories
             GameItem item = new GameItem(GameItem.ItemCategory.Consumable, id, name, price);
             item.Action = new Heal(item, hitPointsToHeal);
             _standardGameItems.Add(item);
+        }
+
+        public static string ItemName(int itemTypeID)
+        {
+            return _standardGameItems.FirstOrDefault(i => i.ItemTypeID == itemTypeID)?.Name ?? "";
         }
     }
 }
